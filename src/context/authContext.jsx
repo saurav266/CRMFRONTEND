@@ -1,27 +1,19 @@
-import axios from 'axios';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+// context/authContext.jsx
+import axios from "axios";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const userContext = createContext();
 
-const AuthContext = ({ children }) => {
+const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // default to true while verifying
+  const [loading, setLoading] = useState(true);
 
+  // ✅ Restore session from cookie
   useEffect(() => {
     const verifyUser = async () => {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        setUser(null);
-        setLoading(false);
-        return;
-      }
-
       try {
-        const response = await axios.get('http://localhost:3000/api/users/verify', {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+        const response = await axios.get("http://localhost:3000/api/users/verify", {
+          withCredentials: true,
         });
 
         if (response.data.success) {
@@ -30,8 +22,7 @@ const AuthContext = ({ children }) => {
           setUser(null);
         }
       } catch (err) {
-        console.log("Token expired or invalid");
-        console.log(err.response?.data?.error || err.message);
+        console.log("Session invalid or expired");
         setUser(null);
       } finally {
         setLoading(false);
@@ -41,14 +32,20 @@ const AuthContext = ({ children }) => {
     verifyUser();
   }, []);
 
-  const login = (user) => {
-    setUser(user);
-    // Optionally store token here
+  const login = (userData) => {
+    setUser(userData);
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem("token");
+  const logout = async () => {
+    try {
+      await axios.post("http://localhost:3000/api/users/logout", {}, {
+        withCredentials: true,
+      });
+    } catch (err) {
+      console.error("Logout failed:", err.message);
+    } finally {
+      setUser(null);
+    }
   };
 
   return (
@@ -60,4 +57,4 @@ const AuthContext = ({ children }) => {
 
 export const useAuth = () => useContext(userContext);
 
-export default AuthContext;
+export default AuthProvider;

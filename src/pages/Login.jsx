@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+// components/Login.jsx
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../context/authContext.jsx";
@@ -7,41 +8,33 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const {login}=useAuth()
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try{
-      const response = await axios.post('http://localhost:3000/api/users/login', {
-        email,
-        password
-      });
-      if(response.data.success){
-        login(response.data.user)
-        localStorage.setItem("user",JSON.stringify(response.data.user));
-        if(response.data.user.role==="admin"){
+    try {
+      const response = await axios.post(
+        "http://localhost:3000/api/users/login",
+        { email, password },
+        { withCredentials: true }
+      );
+
+      if (response.data.success) {
+        login(response.data.user);
+        if (response.data.user.role === "admin") {
           navigate("/admin");
-        }
-        else{
+        } else {
           navigate("/employee");
         }
       }
-      
-      console.log('Response:', response);
-      
-      
-    }
-    catch(error){
-      if(error.response && !error.response.data ){
-        setError(error.response.data.error);
-      }
-      else{
-        setError("server error");
+    } catch (error) {
+      if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else {
+        setError("Server error");
       }
     }
-   
-    // navigate("/dashboard");
   };
 
   return (
@@ -52,9 +45,7 @@ const Login = () => {
         {error && <p className="text-red-500 mb-4">{error}</p>}
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 mb-2">
-              Email:
-            </label>
+            <label htmlFor="email" className="block text-gray-700 mb-2">Email:</label>
             <input
               type="email"
               id="email"
@@ -65,9 +56,7 @@ const Login = () => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-gray-700 mb-2">
-              Password:
-            </label>
+            <label htmlFor="password" className="block text-gray-700 mb-2">Password:</label>
             <input
               type="password"
               id="password"

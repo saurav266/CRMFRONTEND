@@ -13,8 +13,7 @@ import Student from "./componenets/admin/students/Student.jsx";
 import StudentDetails from "./componenets/admin/students/StdudentDetails.jsx";
 import EditStudent from "./componenets/admin/students/EditStudent.jsx";
 import ClassPage from "./componenets/admin/class/Class.jsx";
-
-
+import AddClass from "./componenets/admin/class/AddClass.jsx";
 
 const App = () => {
   return (
@@ -40,6 +39,7 @@ const App = () => {
         <Route path="/admin/student/view/:id" element={<StudentDetails />} />
         <Route path="/admin/student/edit/:id" element={<EditStudent />} />
         <Route path="/admin/classes" element={<ClassPage/>} />
+        <Route path="/admin/add-class" element={<AddClass/>} />
         
         </Route>
            
