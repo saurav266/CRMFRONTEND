@@ -19,9 +19,12 @@ const EditStudent = () => {
     const fetchStudent = async () => {
       try {
         const res = await axios.get(`http://localhost:3000/api/users/student/${id}`);
-        setFormData(res.data);
+        console.log('Editing student with ID:', id);
+        const { name, email, phone, class: studentClass, rollNumber, feesPaid } = res.data.student;
+        setFormData({ name, email, phone, class: studentClass, rollNumber, feesPaid, password: '' });
       } catch (err) {
         console.error('Error fetching student:', err);
+        alert('Failed to load student data');
       }
     };
 
@@ -67,30 +70,30 @@ const EditStudent = () => {
             placeholder={field.name.charAt(0).toUpperCase() + field.name.slice(1)}
             value={formData[field.name]}
             onChange={handleChange}
-            required
+            required={field.name !== 'password'} // password optional
             className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         ))}
 
         <div className="md:col-span-2 flex flex-col md:flex-row gap-4">
-  <button
-    type="submit"
-    className="w-full md:w-1/2 bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition"
-  >
-    ✅ Update Student
-  </button>
-  <button
-    type="button"
-    onClick={() => {
-      if (window.confirm('Are you sure you want to cancel editing? Unsaved changes will be lost.')) {
-        navigate('/admin/students');
-      }
-    }}
-    className="w-full md:w-1/2 bg-gray-300 text-gray-800 py-3 rounded-md hover:bg-gray-400 transition"
-  >
-    ❌ Cancel
-  </button>
-</div>
+          <button
+            type="submit"
+            className="w-full md:w-1/2 bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition"
+          >
+            ✅ Update Student
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              if (window.confirm('Are you sure you want to cancel editing? Unsaved changes will be lost.')) {
+                navigate('/admin/students');
+              }
+            }}
+            className="w-full md:w-1/2 bg-gray-300 text-gray-800 py-3 rounded-md hover:bg-gray-400 transition"
+          >
+            ❌ Cancel
+          </button>
+        </div>
       </form>
     </div>
   );

@@ -66,7 +66,7 @@ const StudentListPage = () => {
           <tr>
             <th className="p-3">Name</th>
             <th className="p-3">Email</th>
-            <th className="p-3">Branch</th>
+            <th className="p-3">Class</th>
             <th className="p-3">Roll No</th>
             <th className="p-3">Fees Paid</th>
             <th className="p-3">Actions</th>
@@ -77,7 +77,7 @@ const StudentListPage = () => {
             <tr key={student._id} className="border-t">
               <td className="p-3">{student.name}</td>
               <td className="p-3">{student.email}</td>
-              <td className="p-3">{student.branch}</td>
+              <td className="p-3">{student.class}</td>
               <td className="p-3">{student.rollNumber}</td>
               <td className="p-3">{student.feesPaid}</td>
               <td className="p-3 space-x-2">

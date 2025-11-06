@@ -8,6 +8,8 @@ import PrivateRoute from "./utils/PrivateRoute.jsx";
 import RoleBasedRoute from "./utils/RoleBasedRoute.jsx";
 import AdminHome from "./componenets/admin/home/Home.jsx";
 import AddTeacher from "./componenets/admin/teacher/Teacher.jsx";
+import EditTeacher from "./componenets/admin/teacher/EditTeacher.jsx";
+import ViewTeacher from "./componenets/admin/teacher/ViewTeacher.jsx";
 import AddStudent from "./componenets/admin/students/AddStudent.jsx";
 import Student from "./componenets/admin/students/Student.jsx";
 import StudentDetails from "./componenets/admin/students/StdudentDetails.jsx";
@@ -34,6 +36,8 @@ const App = () => {
         {/* <Route index element={<AdminSummary/>}/> */}
         <Route path="/admin/home" element={<AdminHome/>} />
         <Route path="/admin/teachers" element={<AddTeacher/>} />
+        <Route path="/admin/teacher/edit/:id" element={<EditTeacher />} />
+        <Route path="/admin/teacher/view/:id" element={<ViewTeacher />} />
         <Route path="/admin/students" element={<Student/>} />
         <Route path="/admin/Add-student" element={<AddStudent/>} />
         <Route path="/admin/student/view/:id" element={<StudentDetails />} />
